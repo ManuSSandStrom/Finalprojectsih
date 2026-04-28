@@ -734,15 +734,15 @@ export default function TimetablePage() {
         </div>
       </aside>
 
-      <main className="flex-1 p-4 relative z-10 overflow-auto sm:p-6">
+      <main className="flex-1 p-4 relative z-10 overflow-auto sm:p-5 lg:p-6">
         <div className="max-w-7xl mx-auto space-y-6">
-          <div className="flex flex-col items-stretch gap-6 xl:flex-row xl:items-start xl:justify-between">
+          <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,0.95fr)_minmax(420px,1.35fr)]">
             <div className="flex-1 space-y-4">
-              <div className="text-center mb-8">
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-400 via-indigo-400 to-indigo-400 bg-clip-text text-transparent mb-3 sm:text-5xl sm:mb-4">
+              <div className="mb-5 text-left sm:mb-7 lg:text-center">
+                <h1 className="text-3xl font-bold leading-tight bg-gradient-to-r from-indigo-400 via-indigo-400 to-indigo-400 bg-clip-text text-transparent mb-2 sm:text-4xl xl:text-5xl">
                   Timetable Generator
                 </h1>
-                <p className="text-indigo-200 text-base sm:text-lg">
+                <p className="max-w-2xl text-indigo-200 text-sm leading-6 sm:text-lg lg:mx-auto">
                   Generate, optimize and manage academic timetables with AI assistance
                 </p>
               </div>
@@ -754,9 +754,9 @@ export default function TimetablePage() {
                 </div>
               )}
 
-              <Card className="bg-slate-800/40 backdrop-blur-xl border border-slate-700/50 shadow-2xl shadow-indigo-500/10">
+              <Card className="bg-slate-800/40 backdrop-blur-xl border border-slate-700/50 shadow-xl shadow-indigo-500/10">
                 <CardHeader>
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex flex-row items-center justify-between gap-3">
                     <CardTitle className="flex items-center gap-2 text-white">
                       <Sparkles className="h-5 w-5  text-indigo-300" />
                       Generate New Timetable
@@ -766,9 +766,9 @@ export default function TimetablePage() {
                     </Badge>
                   </div>
                 </CardHeader>
-                <CardContent className="p-6">
+                <CardContent className="p-4 sm:p-5 lg:p-6">
                   <form onSubmit={generateTimetable} className="space-y-5">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-[minmax(0,1.4fr)_minmax(90px,0.65fr)_minmax(130px,1fr)]">
                       <div>
                         <label className="block text-sm font-medium text-indigo-200 mb-2">Department</label>
                         <Input
@@ -806,15 +806,15 @@ export default function TimetablePage() {
                         />
                       </div>
                     </div>
-                    <div className="space-y-3 rounded-xl border border-slate-700/50 bg-slate-900/30 p-4">
-                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="space-y-3 rounded-xl border border-slate-700/50 bg-slate-900/30 p-3 sm:p-4">
+                      <div className="grid grid-cols-1 gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
                         <div>
                           <label className="block text-sm font-medium text-indigo-200">Schedule Days</label>
                           <p className="mt-1 text-xs text-slate-400">
                             Choose weekdays, include weekends, or create a one-day special class timetable.
                           </p>
                         </div>
-                        <div className="grid grid-cols-2 gap-2 sm:flex">
+                        <div className="grid grid-cols-2 gap-2">
                           {[
                             ["weekly", "Weekly"],
                             ["special", "Special Day"],
@@ -824,7 +824,7 @@ export default function TimetablePage() {
                               type="button"
                               variant="outline"
                               onClick={() => setForm({ ...form, scheduleType: value })}
-                              className={`justify-center border-slate-600/50 ${
+                              className={`h-11 justify-center border-slate-600/50 ${
                                 form.scheduleType === value
                                   ? "bg-indigo-600 text-white hover:bg-indigo-500"
                                   : "bg-slate-800/50 text-slate-300 hover:bg-slate-700/60"
@@ -838,7 +838,7 @@ export default function TimetablePage() {
                       </div>
 
                       {form.scheduleType === "weekly" ? (
-                        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
+                        <div className="grid grid-cols-4 gap-2 sm:grid-cols-7">
                           {ALL_DAYS.map((day) => {
                             const active = form.activeDays.includes(day)
                             return (
@@ -847,7 +847,7 @@ export default function TimetablePage() {
                                 type="button"
                                 variant="outline"
                                 onClick={() => toggleActiveDay(day)}
-                                className={`h-10 justify-center border-slate-600/50 text-sm ${
+                                className={`h-10 justify-center border-slate-600/50 px-2 text-sm ${
                                   active
                                     ? "bg-indigo-600 text-white hover:bg-indigo-500"
                                     : "bg-slate-800/50 text-slate-300 hover:bg-slate-700/60"
@@ -891,7 +891,7 @@ export default function TimetablePage() {
                         className="bg-slate-800/50 border-slate-600/50 focus:border-indigo-500 focus:ring-indigo-500/20 text-slate-200 placeholder-slate-500 backdrop-blur-sm transition-all duration-300 hover:border-slate-500/70"
                       />
                     </div>
-                    <div className="flex flex-col gap-3 sm:flex-row">
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1fr)_auto]">
                       <Button
                         type="submit"
                         className="bg-gradient-to-r from-indigo-600 to-indigo-600 hover:from-indigo-500 hover:to-indigo-500 text-white shadow-lg shadow-indigo-600/25 hover:shadow-xl hover:shadow-indigo-600/30 transition-all duration-300 border border-indigo-500/30 backdrop-blur-sm"
@@ -914,10 +914,10 @@ export default function TimetablePage() {
               </Card>
 
               <Card className="bg-slate-800/40 backdrop-blur-xl border border-slate-700/50 shadow-2xl shadow-indigo-500/10">
-                <CardHeader className="border-b border-slate-700/50 p-6">
+                <CardHeader className="border-b border-slate-700/50 p-4 sm:p-6">
                   <CardTitle className="text-indigo-100">Existing Timetables ({timetables.length})</CardTitle>
                 </CardHeader>
-                <CardContent className="p-6">
+                <CardContent className="p-4 sm:p-6">
                   {loadingList ? (
                     <div className="text-center py-8">
                       <div className="animate-spin h-8 w-8 border-4 border-indigo-500 border-t-transparent rounded-full mx-auto mb-4"></div>
@@ -933,7 +933,7 @@ export default function TimetablePage() {
                       {timetables.map((t) => (
                         <div
                           key={t._id}
-                          className="flex flex-col gap-4 p-4 rounded-xl bg-slate-800/30 backdrop-blur-sm hover:bg-slate-700/40 transition-all duration-300 border border-slate-700/50 hover:border-indigo-500/30 sm:flex-row sm:items-center sm:justify-between"
+                          className="flex flex-col gap-4 p-4 rounded-xl bg-slate-800/30 backdrop-blur-sm hover:bg-slate-700/40 transition-all duration-300 border border-slate-700/50 hover:border-indigo-500/30 md:flex-row md:items-center md:justify-between"
                         >
                           <div className="flex-1">
                             <div className="font-semibold text-white">{t.name}</div>
@@ -960,12 +960,12 @@ export default function TimetablePage() {
                               )}
                             </div>
                           </div>
-                          <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center">
+                          <div className="grid grid-cols-3 gap-2 md:flex md:items-center">
                             <Button
                               size="sm"
                               variant="ghost"
                               onClick={() => viewTimetable(t._id)}
-                              className="text-indigo-300 hover:text-white hover:bg-indigo-500/20"
+                              className="justify-center text-indigo-300 hover:text-white hover:bg-indigo-500/20"
                             >
                               View
                             </Button>
@@ -973,7 +973,7 @@ export default function TimetablePage() {
                               size="sm"
                               variant="outline"
                               onClick={() => togglePublish(t)}
-                              className="bg-slate-700/50 text-slate-300 border border-slate-600/50 hover:bg-slate-600/50"
+                              className="justify-center bg-slate-700/50 text-slate-300 border border-slate-600/50 hover:bg-slate-600/50"
                             >
                               {t.status === "published" ? "Unpublish" : "Publish"}
                             </Button>
@@ -981,7 +981,7 @@ export default function TimetablePage() {
                               size="sm"
                               variant="destructive"
                               onClick={() => deleteTimetable(t)}
-                              className="bg-gradient-to-r from-red-600 to-rose-600 text-white hover:from-red-700 hover:to-rose-700 border-0"
+                              className="justify-center bg-red-600/90 text-white hover:bg-red-500 border-0"
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
@@ -994,7 +994,7 @@ export default function TimetablePage() {
               </Card>
             </div>
 
-            <div className="w-full space-y-4 xl:w-[720px] xl:max-w-full">
+            <div className="w-full min-w-0 space-y-4">
               {loadingDetail ? (
                 <Card className="bg-slate-800/40 backdrop-blur-xl border border-slate-700/50">
                   <CardContent className="text-center py-12">

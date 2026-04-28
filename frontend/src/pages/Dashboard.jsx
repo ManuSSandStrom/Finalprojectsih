@@ -240,10 +240,9 @@ export default function Dashboard() {
       </div>
 
       <div className="w-64 bg-slate-800/30 backdrop-blur-xl border-r border-slate-700/50 shadow-2xl relative z-10">
-        <div className="p-6 space-y-8">
+        <div className="p-4 space-y-4 lg:p-6 lg:space-y-8">
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-             
               <div>
                 <h2 className="text-lg font-bold text-white">Smart Scheduler</h2>
                 <p className="text-xs text-slate-400">Smart Classroom</p>
@@ -291,21 +290,21 @@ export default function Dashboard() {
       </div>
 
       <div className="flex-1 overflow-auto relative z-10">
-        <div className="p-8 space-y-8">
+        <div className="p-4 space-y-6 sm:p-6 lg:p-8 lg:space-y-8">
           {/* Header */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div className="space-y-3">
-              <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight bg-gradient-to-r from-white via-indigo-100 to-indigo-100 bg-clip-text text-transparent">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight bg-gradient-to-r from-white via-indigo-100 to-indigo-100 bg-clip-text text-transparent">
                 Dashboard
               </h1>
-              <p className="text-lg text-slate-300 max-w-2xl leading-relaxed">
+              <p className="text-sm sm:text-base lg:text-lg text-slate-300 max-w-2xl leading-relaxed">
                 Welcome to your Smart Classroom Scheduler. Manage courses, faculty, and generate optimal timetables with
                 ease.
               </p>
             </div>
-            <div className="flex gap-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:flex lg:gap-4">
               <Link to="/timetables">
-                <Button className="bg-gradient-to-r from-indigo-500 to-indigo-500 hover:from-indigo-600 hover:to-indigo-600 text-white shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30 transition-all duration-300 px-6 py-3 border border-indigo-400/30">
+                <Button className="w-full bg-gradient-to-r from-indigo-500 to-indigo-500 hover:from-indigo-600 hover:to-indigo-600 text-white shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30 transition-all duration-300 px-6 py-3 border border-indigo-400/30">
                   <Calendar className="h-5 w-5 mr-2" />
                   View Timetables
                 </Button>
@@ -313,7 +312,7 @@ export default function Dashboard() {
               <Link to="/timetables">
                 <Button
                   variant="outline"
-                  className="border-slate-600/50 bg-slate-800/30 backdrop-blur-sm hover:bg-slate-700/40 text-slate-200 hover:border-slate-500/50 shadow-md hover:shadow-lg transition-all duration-300 px-6 py-3"
+                  className="w-full border-slate-600/50 bg-slate-800/30 backdrop-blur-sm hover:bg-slate-700/40 text-slate-200 hover:border-slate-500/50 shadow-md hover:shadow-lg transition-all duration-300 px-6 py-3"
                 >
                   <Sparkles className="h-5 w-5 mr-2" />
                   Generate New
@@ -333,23 +332,23 @@ export default function Dashboard() {
             </Card>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4 xl:gap-6">
             {statCards.map((stat, index) => {
               const IconComponent = stat.icon
               return (
                 <Card
                   key={index}
-                  className={`bg-slate-800/30 backdrop-blur-xl border ${stat.borderColor} shadow-lg hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300 hover:-translate-y-1 hover:scale-105`}
+                  className={`bg-slate-800/30 backdrop-blur-xl border ${stat.borderColor} shadow-lg hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300`}
                 >
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className={`p-3 rounded-xl ${stat.iconBg} backdrop-blur-sm border border-white/10`}>
-                        <IconComponent className={`h-6 w-6 ${stat.iconColor}`} />
+                  <CardContent className="p-4 sm:p-5 lg:p-6">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 mb-3 sm:mb-4">
+                      <div className={`p-2.5 sm:p-3 rounded-xl ${stat.iconBg} backdrop-blur-sm border border-white/10 w-max`}>
+                        <IconComponent className={`h-5 w-5 sm:h-6 sm:w-6 ${stat.iconColor}`} />
                       </div>
-                      <div className="text-right">
+                      <div className="sm:text-right">
                         <p className="text-sm font-medium text-slate-400 mb-1">{stat.title}</p>
                         <p
-                          className={`text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}
+                          className={`text-2xl sm:text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}
                         >
                           {stat.value}
                         </p>
@@ -363,11 +362,11 @@ export default function Dashboard() {
           </div>
 
           {/* Content Grid */}
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-6 xl:grid-cols-3 xl:gap-8">
             <div className="xl:col-span-2">
               <Card className="bg-slate-800/30 backdrop-blur-xl border border-slate-700/50 shadow-lg">
                 <CardHeader className="border-b border-slate-700/50 p-6">
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div className="space-y-2">
                       <CardTitle className="text-xl font-semibold text-white">Recent Timetables</CardTitle>
                       <CardDescription className="text-slate-400">
@@ -405,10 +404,10 @@ export default function Dashboard() {
                       {recentTimetables.map((t) => (
                         <div
                           key={t._id}
-                          className="flex items-center justify-between p-5 bg-slate-700/20 border border-slate-600/30 rounded-xl hover:bg-slate-600/30 hover:border-slate-500/50 transition-all duration-300 backdrop-blur-sm"
+                          className="flex flex-col gap-4 p-4 sm:p-5 bg-slate-700/20 border border-slate-600/30 rounded-xl hover:bg-slate-600/30 hover:border-slate-500/50 transition-all duration-300 backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between"
                         >
                           <div className="flex-1 space-y-2">
-                            <div className="flex items-center gap-3">
+                            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                               <h4 className="font-semibold text-white text-lg">{t.name}</h4>
                               <Badge
                                 variant={t.status === "published" ? "default" : "secondary"}
@@ -558,12 +557,12 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="fixed bottom-8 right-8 z-40">
+      <div className="fixed bottom-5 right-5 z-40 sm:bottom-8 sm:right-8">
         <Button
           onClick={() => setIsChatOpen(true)}
-          className="w-16 h-16 rounded-full bg-gradient-to-r from-indigo-500 to-indigo-500 text-white shadow-2xl shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-110 transition-all duration-300 border border-indigo-400/30 animate-pulse"
+          className="w-14 h-14 rounded-full bg-gradient-to-r from-indigo-500 to-indigo-500 text-white shadow-2xl shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all duration-300 border border-indigo-400/30 sm:h-16 sm:w-16"
         >
-          <MessageSquare className="h-8 w-8" />
+          <MessageSquare className="h-6 w-6 sm:h-8 sm:w-8" />
         </Button>
       </div>
 
