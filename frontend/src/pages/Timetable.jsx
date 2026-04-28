@@ -1,5 +1,4 @@
 ﻿import React, { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -15,12 +14,10 @@ import {
   User,
   MapPin,
   Check,
+  ClipboardList,
+  Eye,
+  RotateCcw,
   Calendar as CalendarIconLucide,
-  LayoutDashboard,
-  BookOpen,
-  Users as UsersIcon,
-  Home as HomeIcon,
-  Bell,
 } from "lucide-react"
 import { api, getApiErrorMessage } from "@/lib/api"
 
@@ -75,25 +72,25 @@ function TimetableGrid({ timetable, courses, faculty, rooms }) {
   const typeColor = (t) => {
     switch (t) {
       case "lecture":
-        return "bg-gradient-to-br from-indigo-500/20 to-indigo-600/20 text-indigo-200 border border-indigo-500/30"
+        return "bg-indigo-50 text-indigo-950 border border-indigo-200"
       case "lab":
-        return "bg-gradient-to-br from-emerald-500/20 to-green-600/20 text-emerald-200 border border-emerald-500/30"
+        return "bg-emerald-50 text-emerald-950 border border-emerald-200"
       case "tutorial":
-        return "bg-gradient-to-br from-indigo-500/20 to-indigo-600/20 text-indigo-200 border border-indigo-500/30"
+        return "bg-sky-50 text-sky-950 border border-sky-200"
       case "exam":
-        return "bg-gradient-to-br from-red-500/20 to-rose-600/20 text-red-200 border border-red-500/30"
+        return "bg-rose-50 text-rose-950 border border-rose-200"
       default:
-        return "bg-gradient-to-br from-slate-600/20 to-gray-700/20 text-slate-200 border border-slate-500/30"
+        return "bg-slate-50 text-slate-950 border border-slate-200"
     }
   }
 
   return (
-    <Card className="bg-slate-800/40 backdrop-blur-xl border border-slate-700/50 shadow-2xl shadow-indigo-500/10">
-      <CardHeader className="border-b border-slate-700/50 p-6">
+    <Card className="border border-slate-200 bg-white shadow-sm">
+      <CardHeader className="border-b border-slate-200 p-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <CardTitle className="text-xl font-bold text-indigo-100">{timetable.name}</CardTitle>
-            <div className="text-sm text-slate-400">
+            <CardTitle className="text-xl font-bold text-slate-950">{timetable.name}</CardTitle>
+            <div className="text-sm text-slate-500">
               {timetable.department} • Semester {timetable.semester} • {timetable.year}
             </div>
           </div>
@@ -102,7 +99,7 @@ function TimetableGrid({ timetable, courses, faculty, rooms }) {
               className={
                 timetable.status === "published"
                   ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white border-0"
-                  : "bg-slate-700/50 text-slate-300 border border-slate-600/50"
+                  : "bg-slate-100 text-slate-700 border border-slate-200"
               }
             >
               {timetable.status}
@@ -112,7 +109,7 @@ function TimetableGrid({ timetable, courses, faculty, rooms }) {
                 {timetable.conflicts.length} conflicts
               </Badge>
             )}
-            <Badge className="bg-slate-700/50 text-slate-300 border border-slate-600/50">
+            <Badge className="bg-slate-100 text-slate-700 border border-slate-200">
               {timetable.metadata?.utilizationRate || 0}% utilized
             </Badge>
           </div>
@@ -125,13 +122,13 @@ function TimetableGrid({ timetable, courses, faculty, rooms }) {
             className="grid gap-3 min-w-[760px]"
             style={{ gridTemplateColumns: `120px repeat(${visibleDays.length}, minmax(140px, 1fr))` }}
           >
-            <div className="font-semibold text-center p-3 bg-slate-700/30 backdrop-blur-sm rounded-xl text-indigo-200 border border-slate-600/50">
+            <div className="font-semibold text-center p-3 bg-slate-100 rounded-xl text-slate-700 border border-slate-200">
               Time
             </div>
             {visibleDays.map((d) => (
               <div
                 key={d}
-                className="font-semibold text-center p-3 bg-slate-700/30 backdrop-blur-sm rounded-xl text-indigo-200 border border-slate-600/50"
+                className="font-semibold text-center p-3 bg-slate-100 rounded-xl text-slate-700 border border-slate-200"
               >
                 {d}
               </div>
@@ -139,7 +136,7 @@ function TimetableGrid({ timetable, courses, faculty, rooms }) {
 
             {TIME_SLOTS.map((slot) => (
               <div key={slot} className="contents">
-                <div className="text-sm text-center p-3 bg-slate-800/40 backdrop-blur-sm rounded-xl flex items-center justify-center text-slate-400 border border-slate-700/50">
+                <div className="text-sm text-center p-3 bg-white rounded-xl flex items-center justify-center text-slate-500 border border-slate-200">
                   <Clock className="h-3 w-3 mr-1" />
                   {slot}
                 </div>
@@ -149,7 +146,7 @@ function TimetableGrid({ timetable, courses, faculty, rooms }) {
                   if (!entry) {
                     return (
                       <div key={`${day}-${slot}`} className="min-h-[80px] p-1">
-                        <div className="h-full bg-slate-800/20 backdrop-blur-sm rounded-xl border-2 border-dashed border-slate-700/50 hover:border-indigo-500/50 transition-all duration-300" />
+                        <div className="h-full bg-slate-50 rounded-xl border-2 border-dashed border-slate-200" />
                       </div>
                     )
                   }
@@ -161,7 +158,7 @@ function TimetableGrid({ timetable, courses, faculty, rooms }) {
                   return (
                     <div key={`${day}-${slot}`} className="min-h-[80px] p-1">
                       <div
-                        className={`p-3 rounded-xl text-xs h-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 backdrop-blur-sm ${typeColor(
+                        className={`p-3 rounded-xl text-xs h-full shadow-sm transition-all duration-300 ${typeColor(
                           course?.type || "lecture",
                         )}`}
                       >
@@ -178,7 +175,7 @@ function TimetableGrid({ timetable, courses, faculty, rooms }) {
                             <span className="truncate">{room ? room.name : entry.roomId}</span>
                           </div>
                           <div className="mt-1">
-                            <Badge variant="outline" className="text-xs px-1 py-0  text-white backdrop-blur-sm">
+                            <Badge variant="outline" className="text-xs px-1 py-0 bg-white/70 text-slate-700">
                               {course?.type || entry.type}
                             </Badge>
                           </div>
@@ -486,7 +483,6 @@ export default function TimetablePage() {
   const [faculty, setFaculty] = useState([])
   const [rooms, setRooms] = useState([])
   const [error, setError] = useState(null)
-  const [activeNavItem, setActiveNavItem] = useState("timetables")
   const [form, setForm] = useState(getDefaultFormState)
 
   useEffect(() => {
@@ -677,117 +673,84 @@ export default function TimetablePage() {
     setError(null)
   }
 
-  const navigationItems = [
-    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, path: "/" },
-    { id: "courses", label: "Courses", icon: BookOpen, path: "/courses" },
-    { id: "faculty", label: "Faculty", icon: UsersIcon, path: "/faculty" },
-    { id: "rooms", label: "Rooms", icon: HomeIcon, path: "/rooms" },
-    { id: "timetables", label: "Timetables", icon: CalendarIconLucide, path: "/timetables" },
-    { id: "notifications", label: "Notifications", icon: Bell, path: "/notifications" },
-  ]
+  const selectedFormDays = form.scheduleType === "special" ? [form.specialDay] : form.activeDays
+  const totalScheduledClasses = timetables.reduce((total, timetable) => total + (timetable.schedule?.length || 0), 0)
+  const publishedCount = timetables.filter((timetable) => timetable.status === "published").length
+  const conflictCount = timetables.reduce((total, timetable) => total + (timetable.conflicts?.length || 0), 0)
 
   return (
-    <div className="flex min-h-screen flex-col bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden lg:flex-row">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-indigo-500/10 to-indigo-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-indigo-500/10 to-rose-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-full blur-3xl animate-pulse delay-500"></div>
-      </div>
-
-      <aside className="relative z-10 w-full bg-slate-800/40 backdrop-blur-xl border-b border-slate-700/50 shadow-2xl p-4 lg:w-64 lg:border-b-0 lg:border-r lg:p-6">
-        <div className="space-y-4 lg:space-y-8">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/25">
-              <CalendarIconLucide className="w-5 h-5 text-white" />
+    <div className="min-h-screen bg-[#f5f7fb] text-slate-950">
+      <main className="mx-auto w-full max-w-[1680px] px-4 py-5 sm:px-6 lg:px-8">
+        <div className="mb-5 rounded-[28px] border border-slate-200 bg-white px-5 py-5 shadow-sm sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-3xl">
+              <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-blue-900">
+                <CalendarIconLucide className="h-4 w-4" />
+                Timetable Workspace
+              </div>
+              <h1 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Build, review, and publish schedules</h1>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
+                Generate AI-assisted weekly or special-day timetables, validate conflicts, and export the final grid as a PDF.
+              </p>
             </div>
-            <div>
-              <h2 className="text-lg font-bold text-indigo-100">Scheduler</h2>
-              <p className="text-xs text-slate-400">Smart Classroom</p>
+            <div className="grid grid-cols-2 gap-3 sm:min-w-[520px] sm:grid-cols-4">
+              {[
+                ["Timetables", timetables.length],
+                ["Published", publishedCount],
+                ["Classes", totalScheduledClasses],
+                ["Conflicts", conflictCount],
+              ].map(([label, value]) => (
+                <div key={label} className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+                  <div className="text-2xl font-bold text-blue-950">{value}</div>
+                  <div className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">{label}</div>
+                </div>
+              ))}
             </div>
           </div>
-          <nav className="flex gap-2 overflow-x-auto pb-1 lg:block lg:space-y-2 lg:overflow-visible lg:pb-0">
-            {navigationItems.map((item) => {
-              const IconComponent = item.icon
-              const isActive = activeNavItem === item.id
-              return (
-                <Link key={item.id} to={item.path} onClick={() => setActiveNavItem(item.id)}>
-                  <div
-                    className={`flex min-w-max items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group cursor-pointer lg:min-w-0 ${
-                      isActive
-                        ? "bg-gradient-to-r from-indigo-600/30 to-indigo-600/30 text-indigo-100 shadow-lg shadow-indigo-600/20 border border-indigo-500/30 backdrop-blur-sm"
-                        : "text-slate-300 hover:bg-slate-700/30 hover:text-indigo-200 backdrop-blur-sm border border-transparent hover:border-slate-600/30"
-                    }`}
-                  >
-                    <IconComponent
-                      className={`w-5 h-5 transition-all duration-300 ${
-                        isActive ? "text-indigo-300" : "text-slate-400 group-hover:text-indigo-400"
-                      } group-hover:scale-110`}
-                    />
-                    <span className={`font-medium transition-colors duration-300 ${isActive ? "text-indigo-100" : ""}`}>
-                      {item.label}
-                    </span>
-                  </div>
-                </Link>
-              )
-            })}
-          </nav>
         </div>
-      </aside>
 
-      <main className="flex-1 p-4 relative z-10 overflow-auto sm:p-5 lg:p-6">
-        <div className="max-w-7xl mx-auto space-y-6">
-          <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,0.95fr)_minmax(420px,1.35fr)]">
-            <div className="flex-1 space-y-4">
-              <div className="mb-5 text-left sm:mb-7 lg:text-center">
-                <h1 className="text-3xl font-bold leading-tight bg-gradient-to-r from-indigo-400 via-indigo-400 to-indigo-400 bg-clip-text text-transparent mb-2 sm:text-4xl xl:text-5xl">
-                  Timetable Generator
-                </h1>
-                <p className="max-w-2xl text-indigo-200 text-sm leading-6 sm:text-lg lg:mx-auto">
-                  Generate, optimize and manage academic timetables with AI assistance
-                </p>
-              </div>
+        {error && (
+          <div className="mb-5 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-red-800">
+            <AlertTriangle className="mt-0.5 h-5 w-5 flex-shrink-0" />
+            <span className="text-sm font-medium">{error}</span>
+          </div>
+        )}
 
-              {error && (
-                <div className="bg-red-500/10 backdrop-blur-sm border border-red-400/30 text-red-300 px-4 py-3 rounded-xl flex items-center gap-2">
-                  <AlertTriangle className="h-5 w-5 flex-shrink-0" />
-                  <span>{error}</span>
+        <div className="grid grid-cols-1 gap-5 xl:grid-cols-[430px_minmax(0,1fr)]">
+          <div className="space-y-5">
+            <Card className="border border-slate-200 bg-white shadow-sm">
+              <CardHeader className="border-b border-slate-100 px-5 py-5">
+                <div className="flex items-center justify-between gap-3">
+                  <CardTitle className="flex items-center gap-2 text-slate-950">
+                    <Sparkles className="h-5 w-5 text-blue-900" />
+                    Generator
+                  </CardTitle>
+                  <Badge className="border-0 bg-blue-50 text-blue-900">AI Powered</Badge>
                 </div>
-              )}
-
-              <Card className="bg-slate-800/40 backdrop-blur-xl border border-slate-700/50 shadow-xl shadow-indigo-500/10">
-                <CardHeader>
-                  <div className="flex flex-row items-center justify-between gap-3">
-                    <CardTitle className="flex items-center gap-2 text-white">
-                      <Sparkles className="h-5 w-5  text-indigo-300" />
-                      Generate New Timetable
-                    </CardTitle>
-                    <Badge className="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white border-0 shadow-lg">
-                      AI Powered
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="p-4 sm:p-5 lg:p-6">
-                  <form onSubmit={generateTimetable} className="space-y-5">
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-[minmax(0,1.4fr)_minmax(90px,0.65fr)_minmax(130px,1fr)]">
+              </CardHeader>
+              <CardContent className="p-5">
+                <form onSubmit={generateTimetable} className="space-y-5">
+                  <div className="grid grid-cols-1 gap-4">
+                    <div>
+                      <label className="mb-2 block text-sm font-semibold text-slate-700">Department</label>
+                      <Input
+                        value={form.department}
+                        onChange={(e) => setForm({ ...form, department: e.target.value })}
+                        placeholder="e.g., Computer Science"
+                        required
+                        className="h-12 border-slate-200 bg-white text-slate-950 placeholder:text-slate-400 focus-visible:ring-blue-900/20"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-sm font-medium text-indigo-200 mb-2">Department</label>
-                        <Input
-                          value={form.department}
-                          onChange={(e) => setForm({ ...form, department: e.target.value })}
-                          placeholder="e.g., Computer Science"
-                          required
-                          className="bg-slate-800/50 border-slate-600/50 focus:border-indigo-500 focus:ring-indigo-500/20 text-slate-200 placeholder-slate-500 backdrop-blur-sm transition-all duration-300 hover:border-slate-500/70"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-indigo-200 mb-2">Semester</label>
+                        <label className="mb-2 block text-sm font-semibold text-slate-700">Semester</label>
                         <Select value={form.semester} onValueChange={(value) => setForm({ ...form, semester: value })}>
-                          <SelectTrigger className="bg-slate-800/50 border-slate-600/50 focus:border-indigo-500 text-slate-200 backdrop-blur-sm transition-all duration-300 hover:border-slate-500/70">
+                          <SelectTrigger className="h-12 border-slate-200 bg-white text-slate-950 focus:ring-blue-900/20">
                             <SelectValue placeholder="Select semester" />
                           </SelectTrigger>
-                          <SelectContent className="bg-slate-800/90 backdrop-blur-xl border-slate-600/50 text-slate-200">
+                          <SelectContent className="border-slate-200 bg-white text-slate-950">
                             {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
-                              <SelectItem key={sem} value={sem.toString()} className="hover:bg-slate-700/50 focus:bg-slate-700/50">
+                              <SelectItem key={sem} value={sem.toString()}>
                                 {sem}
                               </SelectItem>
                             ))}
@@ -795,261 +758,272 @@ export default function TimetablePage() {
                         </Select>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-indigo-200 mb-2">Academic Year</label>
+                        <label className="mb-2 block text-sm font-semibold text-slate-700">Academic Year</label>
                         <Input
                           type="number"
                           value={form.academicYear}
                           onChange={(e) => setForm({ ...form, academicYear: e.target.value })}
                           min="2020"
                           max="2030"
-                          className="bg-slate-800/50 border-slate-600/50 focus:border-indigo-500 focus:ring-indigo-500/20 text-slate-200 placeholder-slate-500 backdrop-blur-sm transition-all duration-300 hover:border-slate-500/70"
+                          className="h-12 border-slate-200 bg-white text-slate-950 focus-visible:ring-blue-900/20"
                         />
                       </div>
                     </div>
-                    <div className="space-y-3 rounded-xl border border-slate-700/50 bg-slate-900/30 p-3 sm:p-4">
-                      <div className="grid grid-cols-1 gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-                        <div>
-                          <label className="block text-sm font-medium text-indigo-200">Schedule Days</label>
-                          <p className="mt-1 text-xs text-slate-400">
-                            Choose weekdays, include weekends, or create a one-day special class timetable.
-                          </p>
-                        </div>
-                        <div className="grid grid-cols-2 gap-2">
-                          {[
-                            ["weekly", "Weekly"],
-                            ["special", "Special Day"],
-                          ].map(([value, label]) => (
-                            <Button
-                              key={value}
-                              type="button"
-                              variant="outline"
-                              onClick={() => setForm({ ...form, scheduleType: value })}
-                              className={`h-11 justify-center border-slate-600/50 ${
-                                form.scheduleType === value
-                                  ? "bg-indigo-600 text-white hover:bg-indigo-500"
-                                  : "bg-slate-800/50 text-slate-300 hover:bg-slate-700/60"
-                              }`}
-                            >
-                              {form.scheduleType === value && <Check className="mr-2 h-4 w-4" />}
-                              {label}
-                            </Button>
-                          ))}
-                        </div>
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    <div className="mb-3 flex items-start justify-between gap-3">
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-800">Schedule Days</label>
+                        <p className="mt-1 text-xs leading-5 text-slate-500">
+                          Selected: {selectedFormDays.join(", ")}
+                        </p>
                       </div>
-
-                      {form.scheduleType === "weekly" ? (
-                        <div className="grid grid-cols-4 gap-2 sm:grid-cols-7">
-                          {ALL_DAYS.map((day) => {
-                            const active = form.activeDays.includes(day)
-                            return (
-                              <Button
-                                key={day}
-                                type="button"
-                                variant="outline"
-                                onClick={() => toggleActiveDay(day)}
-                                className={`h-10 justify-center border-slate-600/50 px-2 text-sm ${
-                                  active
-                                    ? "bg-indigo-600 text-white hover:bg-indigo-500"
-                                    : "bg-slate-800/50 text-slate-300 hover:bg-slate-700/60"
-                                }`}
-                              >
-                                {day.slice(0, 3)}
-                              </Button>
-                            )
-                          })}
-                        </div>
-                      ) : (
-                        <div className="max-w-xs">
-                          <label className="block text-sm font-medium text-indigo-200 mb-2">Special Class Day</label>
-                          <Select
-                            value={form.specialDay}
-                            onValueChange={(value) => setForm({ ...form, specialDay: value })}
-                          >
-                            <SelectTrigger className="bg-slate-800/50 border-slate-600/50 focus:border-indigo-500 text-slate-200 backdrop-blur-sm transition-all duration-300 hover:border-slate-500/70">
-                              <SelectValue placeholder="Select day" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-slate-800/90 backdrop-blur-xl border-slate-600/50 text-slate-200">
-                              {ALL_DAYS.map((day) => (
-                                <SelectItem key={day} value={day} className="hover:bg-slate-700/50 focus:bg-slate-700/50">
-                                  {day}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      )}
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-indigo-200 mb-2">
-                        Constraints (Optional JSON or Notes)
-                      </label>
-                      <Textarea
-                        value={form.constraintsText}
-                        onChange={(e) => setForm({ ...form, constraintsText: e.target.value })}
-                        placeholder='e.g., {"avoidFriday": true} or "No classes after 4 PM"'
-                        rows={3}
-                        className="bg-slate-800/50 border-slate-600/50 focus:border-indigo-500 focus:ring-indigo-500/20 text-slate-200 placeholder-slate-500 backdrop-blur-sm transition-all duration-300 hover:border-slate-500/70"
-                      />
-                    </div>
-                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1fr)_auto]">
-                      <Button
-                        type="submit"
-                        className="bg-gradient-to-r from-indigo-600 to-indigo-600 hover:from-indigo-500 hover:to-indigo-500 text-white shadow-lg shadow-indigo-600/25 hover:shadow-xl hover:shadow-indigo-600/30 transition-all duration-300 border border-indigo-500/30 backdrop-blur-sm"
-                        disabled={generating}
-                      >
-                        <Sparkles className="h-4 w-4 mr-2" />
-                        {generating ? "Generating..." : "Generate Timetable"}
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={resetForm}
-                        className="bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 border border-slate-600/50 hover:border-slate-500/70 backdrop-blur-sm transition-all duration-300"
-                      >
-                        Reset
-                      </Button>
-                    </div>
-                  </form>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-slate-800/40 backdrop-blur-xl border border-slate-700/50 shadow-2xl shadow-indigo-500/10">
-                <CardHeader className="border-b border-slate-700/50 p-4 sm:p-6">
-                  <CardTitle className="text-indigo-100">Existing Timetables ({timetables.length})</CardTitle>
-                </CardHeader>
-                <CardContent className="p-4 sm:p-6">
-                  {loadingList ? (
-                    <div className="text-center py-8">
-                      <div className="animate-spin h-8 w-8 border-4 border-indigo-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-                      <p className="text-indigo-200">Loading timetables...</p>
-                    </div>
-                  ) : timetables.length === 0 ? (
-                    <div className="text-center py-8 text-slate-400">
-                      <Sparkles className="h-12 w-12 mx-auto mb-4 opacity-30" />
-                      <p>No timetables found. Generate your first timetable above!</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      {timetables.map((t) => (
-                        <div
-                          key={t._id}
-                          className="flex flex-col gap-4 p-4 rounded-xl bg-slate-800/30 backdrop-blur-sm hover:bg-slate-700/40 transition-all duration-300 border border-slate-700/50 hover:border-indigo-500/30 md:flex-row md:items-center md:justify-between"
+                    <div className="mb-3 grid grid-cols-2 gap-2">
+                      {[
+                        ["weekly", "Weekly"],
+                        ["special", "Special Day"],
+                      ].map(([value, label]) => (
+                        <Button
+                          key={value}
+                          type="button"
+                          variant="outline"
+                          onClick={() => setForm({ ...form, scheduleType: value })}
+                          className={`h-11 justify-center rounded-xl border-slate-200 ${
+                            form.scheduleType === value
+                              ? "bg-blue-950 text-white hover:bg-blue-900"
+                              : "bg-white text-slate-700 hover:bg-slate-100"
+                          }`}
                         >
-                          <div className="flex-1">
-                            <div className="font-semibold text-white">{t.name}</div>
-                            <div className="text-sm text-slate-400">
-                              {t.department} • Semester {t.semester} • {t.year}
-                            </div>
-                            <div className="flex items-center gap-2 mt-1">
-                              <Badge
-                                className={
-                                  t.status === "published"
-                                    ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white border-0"
-                                    : "bg-slate-700/50 text-slate-300 border border-slate-600/50"
-                                }
-                              >
-                                {t.status}
-                              </Badge>
-                              <Badge className="bg-slate-700/50 text-slate-300 border border-slate-600/50 text-xs">
-                                {t.metadata?.totalHours || 0} hours
-                              </Badge>
-                              {t.conflicts && t.conflicts.length > 0 && (
-                                <Badge className="bg-gradient-to-r from-red-500 to-rose-600 text-white border-0 text-xs">
-                                  {t.conflicts.length} conflicts
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-3 gap-2 md:flex md:items-center">
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              onClick={() => viewTimetable(t._id)}
-                              className="justify-center text-indigo-300 hover:text-white hover:bg-indigo-500/20"
-                            >
-                              View
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => togglePublish(t)}
-                              className="justify-center bg-slate-700/50 text-slate-300 border border-slate-600/50 hover:bg-slate-600/50"
-                            >
-                              {t.status === "published" ? "Unpublish" : "Publish"}
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="destructive"
-                              onClick={() => deleteTimetable(t)}
-                              className="justify-center bg-red-600/90 text-white hover:bg-red-500 border-0"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </div>
+                          {form.scheduleType === value && <Check className="mr-2 h-4 w-4" />}
+                          {label}
+                        </Button>
                       ))}
                     </div>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
 
-            <div className="w-full min-w-0 space-y-4">
-              {loadingDetail ? (
-                <Card className="bg-slate-800/40 backdrop-blur-xl border border-slate-700/50">
-                  <CardContent className="text-center py-12">
-                    <div className="animate-spin h-8 w-8 border-4 border-indigo-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-                    <p className="text-indigo-200">Loading timetable details...</p>
-                  </CardContent>
-                </Card>
-              ) : !selected ? (
-                <Card className="bg-slate-800/40 backdrop-blur-xl border border-slate-700/50">
-                  <CardHeader>
-                    <CardTitle className="text-indigo-100">Timetable Preview</CardTitle>
-                  </CardHeader>
-                  <CardContent className="text-center py-12">
-                    <div className="text-slate-500">
-                      <CalendarIconLucide className="h-16 w-16 mx-auto mb-4 opacity-30" />
-                      <p className="text-lg font-medium mb-2 text-slate-300">No Timetable Selected</p>
-                      <p className="text-sm">
-                        Select a timetable from the list to view details, grid, and management options.
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ) : (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 gap-3 sm:flex sm:flex-wrap">
+                    {form.scheduleType === "weekly" ? (
+                      <div className="grid grid-cols-4 gap-2 sm:grid-cols-7 xl:grid-cols-4">
+                        {ALL_DAYS.map((day) => {
+                          const active = form.activeDays.includes(day)
+                          return (
+                            <Button
+                              key={day}
+                              type="button"
+                              variant="outline"
+                              onClick={() => toggleActiveDay(day)}
+                              className={`h-10 justify-center rounded-xl border-slate-200 px-2 text-sm ${
+                                active
+                                  ? "bg-indigo-600 text-white hover:bg-indigo-500"
+                                  : "bg-white text-slate-600 hover:bg-slate-100"
+                              }`}
+                            >
+                              {day.slice(0, 3)}
+                            </Button>
+                          )
+                        })}
+                      </div>
+                    ) : (
+                      <div>
+                        <label className="mb-2 block text-sm font-semibold text-slate-700">Special Class Day</label>
+                        <Select value={form.specialDay} onValueChange={(value) => setForm({ ...form, specialDay: value })}>
+                          <SelectTrigger className="h-12 border-slate-200 bg-white text-slate-950">
+                            <SelectValue placeholder="Select day" />
+                          </SelectTrigger>
+                          <SelectContent className="border-slate-200 bg-white text-slate-950">
+                            {ALL_DAYS.map((day) => (
+                              <SelectItem key={day} value={day}>
+                                {day}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="mb-2 block text-sm font-semibold text-slate-700">Constraints</label>
+                    <Textarea
+                      value={form.constraintsText}
+                      onChange={(e) => setForm({ ...form, constraintsText: e.target.value })}
+                      placeholder='Optional: {"avoidFriday": true} or "No classes after 4 PM"'
+                      rows={3}
+                      className="border-slate-200 bg-white text-slate-950 placeholder:text-slate-400 focus-visible:ring-blue-900/20"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1fr)_auto]">
                     <Button
-                      type="button"
-                      onClick={optimizeSelected}
-                      disabled={optimizing}
-                      className="border border-indigo-500/30 bg-gradient-to-r from-slate-900 to-indigo-700 text-white shadow-lg shadow-indigo-950/20 transition-all duration-300 hover:from-slate-950 hover:to-indigo-600"
+                      type="submit"
+                      className="h-12 bg-blue-950 text-white shadow-sm hover:bg-blue-900"
+                      disabled={generating}
                     >
-                      <Sparkles className="h-4 w-4 mr-2" />
-                      {optimizing ? "Optimizing..." : "Optimize Timetable"}
+                      <Sparkles className="mr-2 h-4 w-4" />
+                      {generating ? "Generating..." : "Generate Timetable"}
                     </Button>
                     <Button
                       type="button"
                       variant="outline"
-                      onClick={downloadTimetablePdf}
-                      disabled={exportingPdf}
-                      className="border-slate-600/50 bg-slate-800/40 text-slate-200 transition-all duration-300 hover:border-slate-500/70 hover:bg-slate-700/50"
+                      onClick={resetForm}
+                      className="h-12 border-slate-200 bg-white text-slate-700 hover:bg-slate-100"
                     >
-                      <FileDown className="h-4 w-4 mr-2" />
-                      {exportingPdf ? "Preparing PDF..." : "Download PDF"}
+                      <RotateCcw className="mr-2 h-4 w-4" />
+                      Reset
                     </Button>
                   </div>
-                  <TimetableGrid timetable={selected} courses={courses} faculty={faculty} rooms={rooms} />
+                </form>
+              </CardContent>
+            </Card>
+
+            <Card className="border border-slate-200 bg-white shadow-sm">
+              <CardHeader className="border-b border-slate-100 px-5 py-5">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="flex items-center gap-2 text-slate-950">
+                    <ClipboardList className="h-5 w-5 text-blue-900" />
+                    Timetables
+                  </CardTitle>
+                  <Badge className="border border-slate-200 bg-slate-50 text-slate-700">{timetables.length} total</Badge>
+                </div>
+              </CardHeader>
+              <CardContent className="p-4">
+                {loadingList ? (
+                  <div className="py-8 text-center text-slate-500">
+                    <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-blue-900 border-t-transparent" />
+                    Loading timetables...
+                  </div>
+                ) : timetables.length === 0 ? (
+                  <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-8 text-center text-slate-500">
+                    No timetables yet. Generate the first schedule above.
+                  </div>
+                ) : (
+                  <div className="max-h-[520px] space-y-3 overflow-y-auto pr-1">
+                    {timetables.map((timetable) => (
+                      <div
+                        key={timetable._id}
+                        className={`rounded-2xl border p-4 transition ${
+                          selected?._id === timetable._id
+                            ? "border-blue-900 bg-blue-50"
+                            : "border-slate-200 bg-white hover:border-blue-200 hover:bg-slate-50"
+                        }`}
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <div className="truncate font-bold text-slate-950">{timetable.name}</div>
+                            <div className="mt-1 text-sm text-slate-500">
+                              {timetable.department} / Semester {timetable.semester} / {timetable.year}
+                            </div>
+                            <div className="mt-3 flex flex-wrap gap-2">
+                              <Badge className="border border-slate-200 bg-slate-50 text-slate-700">{timetable.status}</Badge>
+                              <Badge className="border border-slate-200 bg-slate-50 text-slate-700">
+                                {timetable.metadata?.totalHours || 0} hours
+                              </Badge>
+                              {timetable.conflicts?.length > 0 && (
+                                <Badge className="border-0 bg-red-100 text-red-700">{timetable.conflicts.length} conflicts</Badge>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="mt-4 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_44px] gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => viewTimetable(timetable._id)}
+                            className="justify-center border-slate-200 bg-white text-blue-900 hover:bg-blue-50"
+                          >
+                            <Eye className="mr-2 h-4 w-4" />
+                            View
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => togglePublish(timetable)}
+                            className="justify-center border-slate-200 bg-white text-slate-700 hover:bg-slate-100"
+                          >
+                            {timetable.status === "published" ? "Unpublish" : "Publish"}
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => deleteTimetable(timetable)}
+                            className="justify-center bg-red-600 text-white hover:bg-red-500"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          <section className="min-w-0 rounded-[28px] border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+            <div className="mb-4 flex flex-col gap-3 border-b border-slate-100 pb-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <div className="text-sm font-bold uppercase tracking-[0.18em] text-blue-900">Preview</div>
+                <h2 className="mt-1 text-2xl font-bold text-slate-950">
+                  {selected ? selected.name : "Select a timetable"}
+                </h2>
+                <p className="mt-1 text-sm text-slate-500">
+                  {selected
+                    ? `${selected.department} / Semester ${selected.semester} / ${selected.schedule?.length || 0} scheduled classes`
+                    : "Choose a timetable from the list to inspect, validate, publish, or export it."}
+                </p>
+              </div>
+
+              {selected && (
+                <div className="grid grid-cols-1 gap-2 sm:flex">
+                  <Button
+                    type="button"
+                    onClick={optimizeSelected}
+                    disabled={optimizing}
+                    className="h-11 bg-blue-950 text-white hover:bg-blue-900"
+                  >
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    {optimizing ? "Checking..." : "Check Conflicts"}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={downloadTimetablePdf}
+                    disabled={exportingPdf}
+                    className="h-11 border-slate-200 bg-white text-slate-700 hover:bg-slate-100"
+                  >
+                    <FileDown className="mr-2 h-4 w-4" />
+                    {exportingPdf ? "Preparing..." : "Download PDF"}
+                  </Button>
                 </div>
               )}
             </div>
-          </div>
+
+            {loadingDetail ? (
+              <div className="grid min-h-[420px] place-items-center rounded-3xl border border-slate-200 bg-slate-50 text-slate-500">
+                <div className="text-center">
+                  <div className="mx-auto mb-4 h-9 w-9 animate-spin rounded-full border-4 border-blue-900 border-t-transparent" />
+                  Loading timetable details...
+                </div>
+              </div>
+            ) : !selected ? (
+              <div className="grid min-h-[520px] place-items-center rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-6 text-center">
+                <div className="max-w-md">
+                  <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-blue-900 shadow-sm">
+                    <CalendarIconLucide className="h-8 w-8" />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-950">No timetable selected</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-500">
+                    Select an existing timetable or generate a new one. The weekly grid, conflicts, and PDF tools will appear here.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <TimetableGrid timetable={selected} courses={courses} faculty={faculty} rooms={rooms} />
+            )}
+          </section>
         </div>
       </main>
     </div>
   )
 }
-
-
 
