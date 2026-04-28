@@ -35,9 +35,9 @@ const TIME_SLOTS = [
 
 function getDefaultFormState() {
   return {
-    department: "Computer Science",
-    semester: "5",
-    academicYear: new Date().getFullYear(),
+    department: "",
+    semester: "",
+    academicYear: "",
     scheduleType: "weekly",
     activeDays: WEEKDAYS,
     specialDay: "Saturday",
@@ -556,8 +556,8 @@ export default function TimetablePage() {
 
   async function generateTimetable(e) {
     e.preventDefault()
-    if (!form.department || !form.semester) {
-      setError("Please fill in department and semester")
+    if (!form.department || !form.semester || !form.academicYear) {
+      setError("Please fill in department, semester, and academic year")
       return
     }
     setGenerating(true)
@@ -765,6 +765,8 @@ export default function TimetablePage() {
                           onChange={(e) => setForm({ ...form, academicYear: e.target.value })}
                           min="2020"
                           max="2030"
+                          placeholder="e.g., 2026"
+                          required
                           className="h-12 border-slate-200 bg-white text-slate-950 focus-visible:ring-blue-900/20"
                         />
                       </div>
